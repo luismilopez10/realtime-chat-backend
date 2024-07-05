@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../models/user');
 const { generateJWT } = require('../helpers/jwt');
+const user = require('../models/user');
 
 const createUser = async (req, res = response) => {
 
@@ -84,4 +85,19 @@ const login = async (req, res = response) => {
     }
 }
 
-module.exports = { createUser, login }
+const renewToken = async (req, res = response) => {
+    const uid = req.uid;
+
+    // Generar el JWT
+    const token = await generateJWT(uid);
+
+    const user = await User.findById(uid);
+
+    res.json({
+        ok: true,
+        user: user,
+        token
+    });
+}
+
+module.exports = { createUser, login, renewToken }

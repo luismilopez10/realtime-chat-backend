@@ -5,8 +5,9 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { createUser, login } = require('../controllers/auth_controller');
-const { validateFields } = require('../middlewares/validar_campos');
+const { createUser, login, renewToken } = require('../controllers/auth_controller');
+const { validateFields } = require('../middlewares/validate_fields');
+const { validateJWT } = require('../middlewares/validate_jwt');
 
 const router = Router();
 
@@ -22,5 +23,7 @@ router.post('/', [
     check('password', 'La contraseña es obligatoria').not().isEmpty(),
     validateFields
 ], login);
+
+router.get('/renew', validateJWT, renewToken);
 
 module.exports = router;
