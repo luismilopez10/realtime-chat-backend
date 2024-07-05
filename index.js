@@ -4,8 +4,14 @@ require('dotenv').config();
 
 const port = process.env.PORT;
 
+// DB Config
+require('./database/config').dbConnection();
+
 // App de Express
 const app = express();
+
+// Lectura y parseo del body
+app.use(express.json());
 
 // Node Server
 const server = require('http').createServer(app);
@@ -15,6 +21,9 @@ require('./sockets/socket.js');
 // Path público
 const publicPath = path.resolve(__dirname, 'public');
 app.use(express.static(publicPath));
+
+// Mis rutas
+app.use('/api/login', require('./routes/auth_route.js'));
 
 server.listen(port, (error) => {
     if (error) throw new Error(error);
