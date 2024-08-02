@@ -4,15 +4,14 @@ const getChat = async (req, res) => {
     const myId = req.uid;
     const messagesFrom = req.params.from;
 
-    const last30Messages = await Message.find({
+    const lastMessages = await Message.find({
         $or: [{ from: myId, to: messagesFrom }, { from: messagesFrom, to: myId }]
     })
-        .sort({ createdAt: 'desc' })
-        .limit(30);
+        .sort({ createdAt: 'desc' });
 
     res.json({
         ok: true,
-        messages: last30Messages
+        messages: lastMessages
     });
 }
 
