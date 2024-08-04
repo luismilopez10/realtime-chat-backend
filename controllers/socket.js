@@ -30,9 +30,9 @@ const saveMessage = async (payload) => {
 
     try {
         const message = Message(payload);
-        await message.save();
+        const dbMessage = await message.save();
 
-        return true;
+        return dbMessage;
     } catch (error) {
         return false;
     }

@@ -21,8 +21,9 @@ io.on('connection', client => {
 
     // Escuchar del cliente el mensaje privado
     client.on('private-message', async (payload) => {
-        await saveMessage(payload);
-        io.to(payload.to).emit('private-message', payload);
+        const dbMessage = await saveMessage(payload);
+        io.to(payload.to).emit('private-message', dbMessage);
+        // io.to(payload.from).emit('private-message', dbMessage); //! Enviar un mensaje al Remitente de que su mensaje llegó al servidor
     });
 
     client.on('disconnect', () => {
